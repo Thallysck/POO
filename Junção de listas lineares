@@ -1,0 +1,84 @@
+class No:
+    def __init__(self, carga: object = None, prox: 'No' = None):
+        self.carga = carga
+        self.prox = prox
+
+    def __str__(self):
+        return str(self.carga)
+
+
+class ListaEncadeada:
+
+    def __init__(self):
+        self.cabeca = None
+        self.cauda = None
+
+    def inserir_valor_no_inicio(self, valor: object):
+        novo: 'No' = No(valor)
+        if self.cabeca is None:
+            self.cabeca = self.cauda = novo  ## se a lista está vazia, o novo elemento é referenciado tanto como cabeca, como cauda
+        else:
+            novo.prox = self.cabeca
+            self.cabeca = novo
+
+    def imprimir_lista(self):
+        if self.cabeca is None:
+            print("Lista Vazia")
+            return
+        atual: 'No' = self.cabeca
+        while atual is not None:
+            print(str(atual.carga) + " ")
+            atual = atual.prox
+
+    def inserir_valor_no_final(self, valor):
+        novo = No(valor)
+        if self.cabeca is None:
+            self.cabeca = self.cauda = novo  ## se a lista está vazia, o novo elemento é referenciado tanto como cabeca, como cauda
+        else:
+            self.cauda.prox = novo
+            self.cauda = novo
+
+    def juntar_listas(self, lista1, lista2):
+
+        atual: 'No' = lista1.cabeca
+        while atual is not None:
+            if self.cabeca is None:
+                self.cabeca = self.cauda = atual
+                atual = atual.prox
+
+            self.cauda.prox = atual
+            self.cauda = atual
+            atual = atual.prox
+
+        atual: 'No' = lista2.cabeca
+        if self.cabeca is None:
+            self.cabeca = self.cauda = atual
+
+        while atual is not None:
+            self.cauda.prox = atual
+            self.cauda = atual
+            atual = atual.prox
+
+
+# Programa principal
+terc: 'ListaEncadeada' = ListaEncadeada()
+prim: 'ListaEncadeada' = ListaEncadeada()
+prim.inserir_valor_no_inicio(7)
+prim.inserir_valor_no_inicio(1)
+sec: 'ListaEncadeada' = ListaEncadeada()
+sec.inserir_valor_no_inicio(8)
+sec.inserir_valor_no_inicio(4)
+sec.inserir_valor_no_inicio(3)
+print("Lista Primaria:")
+prim.imprimir_lista()
+print("Lista Secundária:")
+sec.imprimir_lista()
+print("Listas unidas:")
+terc.juntar_listas(prim, sec)
+terc.imprimir_lista()
+print("Teste")
+print(terc.cabeca)
+print(terc.cabeca.prox)
+print(terc.cabeca.prox.prox)
+print(terc.cabeca.prox.prox.prox)
+print(terc.cauda)
