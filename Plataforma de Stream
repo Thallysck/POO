@@ -1,0 +1,156 @@
+class Filme:
+  def __init__(self, id, titulo, preço ): # construtor
+    self.__id = id
+    self.__titulo = titulo
+    self.__nota = None
+    self.__preço = preço
+
+  # método "get" para o id
+  @property
+  def id(self):
+    return self.__id
+
+  @property
+  def titulo(self):
+    return self.__titulo
+
+  @property
+  def nota(self):
+    return self.__nota
+
+  @property
+  def preço(self):
+    return self.__preço
+
+
+  #criar um método "set"
+  @id.setter
+  def id(self, novoId):
+    self.__id = novoId
+
+  @titulo.setter
+  def titulo(self, novoTitulo):
+    self.__titulo = novoTitulo
+
+  @preço.setter
+  def preço(self, novoPreço):
+    self.reajustarPreco(novoPreço)
+
+  def reajustarPreco(self, novoPreço):
+    if novoPreço < 0:
+      self.__preço = 0
+    else:
+      self.__preço = novoPreço
+
+  def avaliar(self, nota):
+    # nota de 1...5
+    if nota > 5:
+      self.__nota = 5
+    elif nota < 0:
+      self.__nota = 0
+    else:
+      self.__nota = nota
+
+
+  def __str__(self):
+    return f'{self.__id} - {self.__titulo} - nota: {self.__nota}, preço = {self.__preço}'
+
+class PlataformaStreaming:
+  def __init__(self, titulo):
+    self.titulo = titulo
+    self.catalogo = []
+
+  def cadastrarFilme( self, filme: Filme ):
+    for f in self.catalogo:
+      if f.id == filme.id:
+        return
+    self.catalogo.append(filme)
+
+  def pesquisaFilme(self, id):
+    for f in self.catalogo:
+      if f.id == id:
+        return f
+
+  def listarFilmes(self):
+    for f in self.catalogo:
+      print(f)
+
+  def avaliarFilme(self, id, nota):
+    for f in self.catalogo:
+      if f.id == id:
+        f.avaliar(nota)
+        return
+
+  def reajustarPreco(self, id, novoPreço):
+    for f in self.catalogo:
+      if f.id == id:
+        f.reajustarPreco(novoPreço)
+        return
+
+
+########################################
+# instanciando a Plataforma de Streaming com o nome desejado
+netflix = PlataformaStreaming('Netflix')
+
+netflix.cadastrarFilme(Filme(1,'Stuart Little',5.0))
+netflix.cadastrarFilme(Filme(2,'Luca',15.0))
+
+while( True):
+  print('--------------------')
+  print(netflix.titulo) # aqui tem quebra de encapsulamento. Vamos consertar isso
+  print('--------------------')
+  print('(r) Reajustar preço')
+  print('(a) Avaliar filme')
+  print('(l) Listar catálogo')
+  print('(c) Cadastrar filme')
+  print('(p) Pesquisar filme')
+  print('(s) Sair')
+  print('---------------------')
+  opcao = input('opcao:')
+  opcao.lower()
+
+  if opcao == 'r': ### Reajustar Preço
+    idFilme = int(input('Digite o id do Filme que deseja alterar o preço:'))
+    filme = netflix.pesquisaFilme(idFilme)
+    if filme == None:
+      print(f'Filme com id {idFilme} não está cadastrado')
+    else:
+      print('Titulo:', filme.titulo)
+      print('Preco anterior:', filme.preço)
+      novoPreco = float(input('Novo preço:'))
+      netflix.reajustarPreco(idFilme, novoPreco)
+
+  elif opcao == 'a':  ### Avaliar filme
+    idFilme = int(input('Digite o id do Filme que deseja avaliar:'))
+    filme = netflix.pesquisaFilme(idFilme)
+    if filme == None:
+      print(f'Filme com id {idFilme} não está cadastrado')
+    else:
+      print('Titulo:', filme.titulo)
+      nota = float(input('Nota:'))
+      netflix.avaliarFilme(idFilme, nota)
+  elif opcao == 'l':
+    print('\n')
+    netflix.listarFilmes()
+  elif opcao == 'c':
+    # NÃO ESTÁ FAZENDO teste de duplicidade
+    idFilme = int(input('id do Filme:'))
+    titulo = input('Titulo:')
+    preço = float(input('Preço da locação:'))
+
+    netflix.cadastrarFilme( Filme(idFilme, titulo, preço))
+
+    print('\n')
+    netflix.listarFilmes()
+
+  elif opcao == 'p':
+    idFilme = int(input('Digite o id do Filme que deseja consultar:'))
+    filme = netflix.pesquisaFilme(idFilme)
+    if filme == None:
+      print(f'Filme com id {idFilme} não está cadastrado')
+    else:
+      print('Titulo:', filme.titulo)
+      print('Preço:', filme.preço)
+      print('Nota:', filme.nota)
+  elif opcao == 's':
+    break
