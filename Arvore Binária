@@ -120,10 +120,6 @@ print("Árvore 2: ")
 arvore2.in_ordem(arvore2.raiz)
 print()
 
-resultado = (12 + (10 * ((20/2) - 7)))
-print("Resultado da equação:")
-print(resultado)
-
 print("Verificação de divergentes (True = Sim) (Se não aparecer nada = False): ")
 arvore1.iguais(arvore1.raiz,arvore2.raiz)
 
