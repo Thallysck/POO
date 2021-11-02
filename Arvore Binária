@@ -1,0 +1,131 @@
+class No:
+  def __init__(self, carga: object, esquerda: 'No' = None, direita: 'No' = None):
+    self.carga = carga
+    self.esquerda = esquerda
+    self.direita = direita
+
+  def __str__(self):
+    return str(self.carga)
+
+RAIZ = "raiz"
+class ArvoreBinaria:
+
+  def __init__(self, raiz: 'No'):
+    self.raiz = raiz
+
+  def in_ordem(self, no: 'No' = None):
+    if no is None:
+      return no
+    if no.esquerda:
+      print('(', end='')
+      self.in_ordem(no.esquerda)
+    print(no, end="")
+
+    if no.direita:
+      self.in_ordem(no.direita)
+      print(')', end='')
+
+  def iguais(self, arvore1: 'No', arvore2: 'No', cont = 0):
+
+    if arvore1 is None and arvore2 is None:
+      return None
+
+    if arvore1.carga != arvore2.carga:
+      divergencia = True
+      print(divergencia)
+
+    if arvore1.esquerda and arvore2.esquerda:
+      self.iguais(arvore1.esquerda, arvore2.esquerda)
+
+    if arvore1.direita and arvore2.direita:
+      self.iguais(arvore1.direita, arvore2.direita)
+
+  def altura(self, no: 'No' = None):
+    if no is None:
+      no = self.raiz
+    altesq = 0
+    altdir = 0
+    if no.esquerda:
+      altesq = self.altura(no.esquerda)
+    if no.direita:
+      altdir = self.altura(no.direita)
+
+    if altdir > altesq:
+      return altdir + 1
+    return altesq + 1
+
+  def ifavl(self, no: 'No' = None):
+    if no is None:
+      no = self.raiz
+    altesq = 0
+    altdir = 0
+    if no.esquerda:
+      altesq = self.altura(no.esquerda)
+    if no.direita:
+      altdir = self.altura(no.direita)
+
+    dif = (altesq + 1) - (altdir + 1)
+    if dif < -1 or dif > 1:
+      return f"Não é AVL. Valor de desbalanceamento: {dif}"
+
+    return f"É AVL. Valor de desbalanceamento: {dif}"
+
+
+
+
+
+
+no1 = No("12", None, None)
+no2 = No("+", None, None)
+no3 = No("10", None, None)
+no4 = No("*", None, None)
+no5 = No("20", None, None)
+no6 = No("/", None, None)
+no7 = No("2", None, None)
+no8 = No("-", None, None)
+no9 = No("7", None, None)
+no2.esquerda = no1
+no2.direita = no4
+no4.esquerda = no3
+no4.direita = no8
+no8.esquerda = no6
+no8.direita = no9
+no6.esquerda = no5
+no6.direita = no7
+arvore1 = ArvoreBinaria(no2)
+print("Árvore 1: ")
+arvore1.in_ordem(arvore1.raiz)
+#============================
+noo1 = No("1", None, None)
+noo2 = No("2", None, None)
+noo3 = No("3", None, None)
+noo4 = No("4", None, None)
+noo5 = No("5", None, None)
+noo6 = No("6", None, None)
+noo7 = No("7", None, None)
+noo8 = No("8", None, None)
+noo9 = No("9", None, None)
+noo2.esquerda = noo1
+noo2.direita = noo4
+noo4.esquerda = noo3
+noo4.direita = noo8
+noo8.esquerda = noo6
+noo8.direita = noo9
+noo6.esquerda = noo5
+noo6.direita = noo7
+
+arvore2 = ArvoreBinaria(noo2)
+print()
+print("Árvore 2: ")
+arvore2.in_ordem(arvore2.raiz)
+print()
+
+resultado = (12 + (10 * ((20/2) - 7)))
+print("Resultado da equação:")
+print(resultado)
+
+print("Verificação de divergentes (True = Sim) (Se não aparecer nada = False): ")
+arvore1.iguais(arvore1.raiz,arvore2.raiz)
+
+print("Altura: ", arvore1.altura())
+print(arvore1.ifavl())
